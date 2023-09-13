@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<fr:resource xmlns:fr="urn:framexs-resource" xmlns="http://www.w3.org/1999/xhtml">
+<div>GitHubリポジトリ</div>
+<ul>
+<li><a href="https://github.com/inomoto-hironobu/inomoto-hironobu.github.io">GitHub Pages</a> このサイトのコード</li>
+<li><a href="https://github.com/inomoto-hironobu/framexs">Framexs</a> FramexsのXSLなど</li>
+<li><a href="https://github.com/inomoto-hironobu/framexs4wordpress">Framexs for WordPress</a> WordPressでFramexsを利用するテーマ</li>
+<li>八百幡テーマ</li>
+<li>XHTML3.0</li>
+</ul>
+<internal-link path="/contents/base/description.xhtml"/>
+<internal-link path="/contents/base/ftml.xhtml"/>
+<internal-link path="/contents/article/HTMLにフレームワークを.xhtml"/>
+</fr:resource>
