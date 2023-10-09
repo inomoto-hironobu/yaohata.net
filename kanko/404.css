@@ -1,0 +1,71 @@
+@charset "utf-8";
+body {
+  font-family: "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic",sans-serif;
+  color: #fff;
+  font-size: 85%;
+  line-height: 1.7;
+  background: url(../images/404/bg_404_sky.png) center 0 repeat-x #f3e6c6;
+  margin: 0;
+  padding: 0;
+}
+/*link*/
+a {
+  color: #fff;
+  text-decoration: none;
+}
+a:link, a:visited {
+  color: #fff;
+  text-decoration: none;
+}
+a:hover, a:active {
+  color: #fff;
+  text-decoration: underline;
+}
+/*layout*/
+#outside {
+  background-image: url(../images/404/bg_404_beach.png);
+  background-position: center 100%;
+  background-repeat: repeat-x;
+  width: 100%;
+}
+#outside:after {
+    clear: both;
+    content: "";
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+#wrapper_page {
+  padding: 110px 0 300px;
+}
+h1, h2 {
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+h1 {
+  margin: 10px;
+}
+h1 img {
+  max-width: 322px;
+  width: 100%;
+}
+* html img {
+  width: 322px;
+}
+h2 {
+  padding: 1em 1em 0 1.5em;
+}
+p {
+  text-align: center;
+  margin:10px;
+}
+p.large {
+  font-size: 200%;
+  padding: 1em 0;
+}
+@media screen and (max-width: 640px) {
+  #wrapper_page {
+      padding: 30px 0 300px;
+  }
+}

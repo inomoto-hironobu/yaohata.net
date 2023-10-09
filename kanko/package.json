@@ -1,0 +1,17 @@
+{
+  "name": "kitakankou",
+  "version": "0.1.0",
+  "description": "北九州観光マップ",
+  "main": "src/js/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "http": "http-server src/web",
+    "http-src": "http-server src"
+  },
+  "author": "井本拓伸",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {
+    "jquery": "^3.7.0"
+  }
+}

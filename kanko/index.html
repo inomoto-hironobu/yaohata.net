@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>北九州市観光マップ</title>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.js"></script>
+	<!-- Sigle Page Applicationとして -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.6/vue.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.6/d3.min.js"></script>
+	<script async src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+
+	<!-- Bootstrap -->
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<!-- /Bootstrap -->
+
+	<!-- jquery.accessible -->
+	<script async src="js/jquery.cookie.js"></script>
+	<script async src="js/jquery.accessible.js"></script>
+	<link rel="stylesheet" href="css/jquery.accessible.css" />
+	<!-- /jquery.accessible -->
+	<!--lightbox-->
+	<script async src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.9.0/js/lightbox.js"></script>
+	<link async rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.9.0/css/lightbox.css"/>
+	<!--/lightbox-->
+
+	<script async src="js/main.js"></script>
+	<link type="text/css" href="css/main.css" rel="stylesheet" />
+
+	<!-- Webフォント 7-stroke http://themes-pixeden.com/font-demos/7-stroke/index.html -->
+	<link rel="stylesheet" href="css/pe-icon-7-stroke.css" />
+	<link rel="stylesheet" href="css/helper.css">
+	<!--/7-stroke-->
+</head>
+<body class="container">
+	<!--ヘッダー-->
+	<header class="row">
+		<div class="col-sm-6 col-xs-12" style="font-size:1.5em">
+			<div style="text-align:left">
+				<div class="syamei">ドリームネットシステムズ</div>
+			</div>
+			<div style="text-align:center">
+				<span>の社員がおすすめする</span>
+			</div>
+			<h1 style="text-align:right">
+				<span class="logo">北九州市の観光マップ</span>
+			</h1>
+		</div>
+		<div class="col-sm-6 col-xs-12 accessible">
+			<div id="fontsize">
+				文字サイズ：
+				<span id="fontsize-normal" class="accessible-button">標準</span>
+				<span id="fontsize-enlarge" class="accessible-button">拡大</span>
+			</div>
+			<div id="inverse">
+				色反転：
+				<span id="inverse-btn" class="accessible-button">黒反転</span>
+			</div>
+		</div>
+	</header>
+	<!--/ヘッダー-->
+	<div id="app" class="row">
+		<!--メニューバー-->
+		<div class="col-sm-12 col-xs-12 menubar">
+			<div class="row">
+			<div class="col-sm-2 col-xs-2 heading-theme">テーマ</div>
+			<ul class="nav nav-tabs menulist col-sm-10 col-xs-10">
+				<li>
+					<a class="pe-7s-play" v-on:click="selectAll">全て</a>
+				</li>
+				<li class="dropdown" v-for="p in themes.tab">
+					<a class="dropdown-toggle pe-7s-menu" data-toggle="dropdown">{{getTheme(p).name}}</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a class="pe-7s-play" v-on:click="selectTheme(getTheme(p))">このテーマ全体を選ぶ</a>
+						</li>
+						<li v-for="e in getEntriesOfTheme(p)">
+							<a class="pe-7s-play" v-on:click="selectEntry(e)">{{e.name}}</a>
+						</li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a class="dropdown-toggle pe-7s-menu" data-toggle="dropdown">その他のテーマ</a>
+					<ul class="dropdown-menu">
+						<li v-for="p in themes.pickedup">
+							<a class="pe-7s-play" v-on:click="selectTheme(getTheme(p))">{{getTheme(p).name}}</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+			</div>
+		</div>
+		<!--/メニューバー-->
+		<div class="col-sm-12 col-xs-12">
+			<div class="row">
+				<!--メイン画面-->
+				<main class="col-sm-9 col-xs-12">
+					<div class="contents">
+						<ul class="nav nav-tabs">
+							<li class="active">
+								<a class="pe-7s-monitor" data-toggle="tab" href="#allmap-pane">全体マップ</a>
+							</li>
+							<li>
+								<a class="pe-7s-monitor"data-toggle="tab" href="#select-pane">選択地一覧</a>
+							</li>
+							<li>
+								<a class="pe-7s-monitor" data-toggle="tab" href="#help-pane">助け</a>
+							</li>
+							<li>
+								<a class="pe-7s-monitor" data-toggle="tab" href="#entry-list">観光地一覧</a>
+							</li>
+							<li>
+								<a class="pe-7s-monitor" data-toggle="tab" href="#theme-list">テーマ一覧</a>
+							</li>
+							<!--イベントに関わる機能は現時点で実装しない
+							<li>
+								<a data-toggle="tab" href="#event-list">イベント一覧</a>
+							</li>-->
+						</ul>
+
+						<div class="tab-content">
+							<!-- 全体マップ 北九州市の地図及びマッピング -->
+							<div id="allmap-pane" class="tab-pane fade in active" style="position:relative;min-height: 800px">
+								<!-- 3層のレイヤーで地図を作る -->
+								<img id="kitakyusyu-shi-map" style="position:absolute;top:0;left:0" src="image/北九州市地図/kitakyusyu2.gif" width="800" />
+								<div style="position:absolute;top:0;left:0;z-index:100">
+									<div id="entryname" style="display:none;background-color:lime;width:10em;position:absolute"></div>
+								</div>
+								<!---->
+								<ul style="position:absolute;top:0;left:0;z-index:20" id="entries">
+									<li v-for="entry in targets" v-bind:style="styles(entry)" v-bind:id="'e' + entry.id" v-on:click="selectEntry(entry)">
+										<img v-on:mouseover="hover(1,$event)" v-on:mouseout="hover(2,$event)" v-bind:src="'image/icon/'+entry.icon" width="16" height="16"
+										alt="" />
+									</li>
+								</ul>
+							</div>
+							<!-- 選択テーマ　選択されたテーマか候補地の概要データのリストを表示する -->
+							<div id="select-pane" class="tab-pane fade">
+								<ul v-if="targets.length !== 0" class="infos-of-entries">
+									<li v-for="target in targets">
+										<h3>{{target.name}}</h3>
+										<dl>
+											<dt>場所</dt>
+											<dd>〒{{target.postcode}} {{target.area}} {{target.address}}</dd>
+											<dt v-if="target.site">サイト</dt>
+											<dd v-if="target.site">
+												<a v-bind:href="target.site">{{target.site}}</a>
+											</dd>
+											<dt v-if="target.summary">概要</dt>
+											<dd v-if="target.summary">{{target.summary}}</dd>
+											<dt v-if="target.article">記事</dt>
+											<dd v-if="target.article"><button v-on:click="loadContents(target, $event)">コンテンツを読み出す</button></dd>
+										</dl>
+									</li>
+								</ul>
+								<article><p v-if="targets.length === 0">候補地は何も選択されていません。</p></article>
+							</div>
+							<!--/選択テーマ-->
+							<!--ヘルプ-->
+							<div id="help-pane" class="tab-pane fade">
+								<h3>このホームページの使い方について</h3>
+								<p>このウェブサイトは専門用語でいうところのシングルページアプリケーションです。普段ご利用のウェブサイトに比べて違った特徴があり独特の操作を要する場合がございますので、ご利用の際にはご注意ください。</p>
+								<p>登録された観光地の候補の中から抽出し、なんらかの関連付けによっていくつかをまとめた集団をテーマとする。</p>
+								<p>テーマの選択は上部の青枠の部からクリックしてください。</p>
+								<p>メイン画面はいくつかの画面をタブと表示画面で構成する。画面の種類は以下の通り。</p>
+								<dl>
+									<dt>全体マップ</dt><dd>北九州市の地図の画像とその上にマッピングされた観光地の位置を表すアイコンとマウスオーバー時にポップアップする観光地名の文字列部分が重ねられた画面</dd>
+									<dt>選択地一覧</dt><dd>概要とコンテンツ呼び出しによって詳細記事の表示がされる観光地のリストを表示する画面</dd>
+								</dl>
+								<p>サイドバーは検索ボックスとエリア選択などテーマの選択だけではできない絞り込みをする部品を配置する。また、お知らせなどの付加情報を載せる。
+								フッターはコピーライトなどのアプリの著作に関する情報を載せる。</p>
+								<p>機能仕様の概要
+								マウスイベントによってテーマとエリアを選ぶことによって内部的にフィルタリングした候補のリストデータを作る。また簡易的な検索によってテーマ選択時のように候補のリストデータも内部的に作る。ある特定の候補を選ぶ場合はその候補がひとつだけあるリストデータを作る。それらリストデータは地図上での配置と概要のリストの表示に使用する。選択地一覧での項目ではもし用意されていれば詳細な解説などを記述した記事を読み込ませ表示する事を可能にする。</p>
+								
+							</div>
+							<!--/ヘルプ-->
+							<div id="entry-list" class="tab-pane fade">
+								<h3>一覧</h3>
+								<ul>
+									<li v-for="e in entries">
+										<div>{{e.id}} | {{e.name}} | {{e.tel}} | {{e.site}}</div>
+										<div>{{e.postcode}} |{{e.area}} | {{e.address}} | {{e.longitude}} | {{e.latitude}}</div>
+										<div>{{e.summary}}</div>
+									</li>
+								</ul>
+							</div>
+							<div id="theme-list" class="tab-pane fade">
+								<table class="table">
+									<tr>
+										<th>id</th>
+										<th>name</th>
+										<th>entries</th>
+									</tr>
+									<tr v-for="t in themes.lists">
+										<td>{{t.id}}</td>
+										<td>{{t.name}}</td>
+										<td>{{t.entries}}</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				</main>
+				<!--サイドバー-->
+				<aside class="col-sm-3 col-xs-12">
+					<div class="contents">
+						<div id="search-box">
+							<h5>簡素検索</h5>
+							<input v-model="keyword" type="text" />
+							<button v-on:click="search">検索</button>
+						</div>
+						<table>
+							<tr><td>場所名:</td><td v-if="selectedEntry">{{selectedEntry.name}}</td></tr>
+							<tr><td>テーマ:</td><td v-if="targetTheme">{{targetTheme.name}}</td></tr>
+							<tr><td>区域:</td><td><select v-on:change="selectArea($event)">
+									<!--設定しない場合は値を空文字列にする-->
+									<option selected value="">設定しない</option>
+									<option>小倉北区</option>
+									<option>小倉南区</option>
+									<option>八幡東区</option>
+									<option>八幡西区</option>
+									<option>戸畑区</option>
+									<option>門司区</option>
+									<option>若松区</option>
+								</select></td></tr>
+						</table>
+						<dl>
+							<dt></dt>
+							<dd ></dd>
+							<dt>テーマ</dt>
+							<dd></dd>
+							<dt></dt>
+							<dd>
+								
+							</dd>
+						</dl>
+						<div class="notifications">
+							<h5>お知らせ</h5>
+							<ul>
+								<li>北九州観光マップを公開しました</li>
+							</ul>
+						</div>
+						<div class="links">
+							<h5>リンク</h5>
+							<ul>
+								<li><a href="http://net.kitakyushucci.or.jp/mono-db/">ものづくり北九州企業データベース</a></li>
+							</ul>
+						</div>
+					</div>
+				</aside>
+				
+				<!--/サイドバー-->
+			</div>
+		</div>
+		<!--/メイン画面-->
+	</div>
+
+	<div class="wireframe" style="clear:both"></div>
+	</div>
+	<!--フッター-->
+	<footer class="row">
+		<div class="col-md-12">
+			<div>
+				
+			</div>
+		</div>
+	</footer>
+	<footer class="row"><address class="col-sm-12 col-xs-12"><a href="http://dream-netsystems.com/">ドリームネットシステムズ</a></address></footer>
+	<!--/フッター-->
+</body>
+
+</html>
