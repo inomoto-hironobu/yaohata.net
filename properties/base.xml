@@ -42,7 +42,7 @@
 <framexs:property name="nav">
 <li title="野望">/contents/ambition.xhtml</li>
 <li title="自己紹介">/contents/aboutme.xhtml</li>
-<li title="記事一覧">/contents/article/index.xhtml</li>
+<li title="記事">/wordpress/</li>
 <li title="お問合せ">/contents/form.xhtml</li>
 </framexs:property>
 
@@ -151,6 +151,5 @@ error
 
 <div id="fb-root"></div>
 <script async="" defer="" crossorigin="anonymous" src="https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&amp;version=v15.0&amp;appId=1249701235068950&amp;autoLogAppEvents=1" nonce="guO3MRsZ"></script>
-<script id="dsq-count-scr" src="//yaohata.disqus.com/count.js" async=""></script>
 </framexs:property>
 </framexs:properties>
