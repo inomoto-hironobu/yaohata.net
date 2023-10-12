@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /tsugumon/enquetes
+Disallow: /tsugumon/tags
+Allow: /contents/
+
+Sitemap: https://yaohata.net:8181/tsugumon/sitemap
