@@ -58,7 +58,7 @@ HTMLエンジニアが全てを変える</div>
 <section>
 <h2>Web Componentsと八百幡コンポーネンツ</h2>
 <p>ここに円グラフがありますね。</p>
-<pie-chart csv="test.csv" col="年" row="2010" width="640" height="400">
+<pie-chart src="test.csv" type="csv" row="2010" width="640" height="400">
 <attributes style="max-width:600px;width:100%"/>
 </pie-chart>
 <p>これは<a href="test.csv">test.csv</a>という架空のデータのうち、一部を読み取って変換しています。
@@ -125,8 +125,8 @@ Access to fetch at 'file:///C:/html/foo.json' from origin 'null' has been blocke
 <br/>日本のHTMLエンジニアからこれができるなら、自分たちが持つスキルや知識を適切に評価され、尊重され、そして、世界中の企業や組織が、私たちの専門知識を求めるでしょう。
 <br/>輝かしい未来を手に入れる一歩です。それでは、気軽にご連絡ください。</p>
 </section>
-<internal-fetch path="../boilerplates.xhtml" target="お問合せ"/>
-<internal-fetch path="../boilerplates.xhtml" target="運営情報"/>
+<internal-fetch path="../boilerplates.xhtml" type="html" target="お問合せ"/>
+<internal-fetch path="../boilerplates.xhtml" type="html" target="運営情報"/>
 </article>
 </main>
 </body>

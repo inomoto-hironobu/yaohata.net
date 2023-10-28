@@ -23,7 +23,7 @@
 <framexs:property name="footer-in-head">
 <script src="/asset/js/yaohata.js"></script>
 <link rel="stylesheet" href="/asset/css/style.css"/>
-<link rel="yaohata-components-setting" href="/ycs.xml"/>
+<link rel="yaohata-components-location" href="/components"/>
 <meta
   http-equiv="Content-Security-Policy"
   content="img-src https://* http://localhost; media-src youtube.com; script-src https://* http://localhost 'unsafe-inline'; script-src-elem https://* http://localhost" />
