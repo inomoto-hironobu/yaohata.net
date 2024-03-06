@@ -21,6 +21,7 @@ window.addEventListener('DOMContentLoaded', ()=>{
 			.replaceWith(document.createTextNode(e));
 		});
 	});
+	loadBasic();
 });
 
 
