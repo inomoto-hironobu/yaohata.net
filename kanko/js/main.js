@@ -213,7 +213,7 @@ function vueApp(entries,themes) {
 				var ep = jQuery(me.target).parent();
 				jQuery.ajax({
 					dataType:"html",
-					url:"webcontent/" + e.article,
+					url:e.article,
 					success: function(data) {
 						var d = jQuery(data).filter('article');
 						var a = d.find('img').wrap(function() {

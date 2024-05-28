@@ -13,7 +13,7 @@ let app;
 
 window.addEventListener("load",(event) => {
 	console.log(event);
-	d3.csv("../web/api/entries.csv",function(error, entries) {
+	d3.csv("../api/entries.csv",function(error, entries) {
 		if(error) console.warn(error);
 		_.map(entries, function(d,i) {
 			if(!d.icon) d.icon = "point.svg";
@@ -21,7 +21,7 @@ window.addEventListener("load",(event) => {
 		});
 		jQuery.ajax({
 			type:"GET",
-			url:"../web/api/themes.json",
+			url:"../api/themes.json",
 			dataType:"json",
 			success: function(themes) {
 				app = vueApp(entries,themes);
